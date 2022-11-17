@@ -1,4 +1,5 @@
 const express = require("express");
+const mongoose = require("mongoose");
 const router = express.Router();
 const Auth = require("../../middleware/auth");
 const userProfile = require("../../models/Profile");
@@ -17,7 +18,7 @@ router.get("/me", Auth, async (req, res) => {
         res.json(profile);
     } catch (error) {
         console.error(error.message);
-        res.status(500).send("Server error");
+        res.status(500).send("Server Error");
     }
 });
 
@@ -105,5 +106,42 @@ router.post(
         }
     }
 );
+
+//info - Route - /profile
+//info - Request type - GET
+//info - Desc - Get all Profiles
+//info - Access type - Public
+router.get("/", async (req, res) => {
+    try {
+        const profiles = await userProfile.find().populate("user", ["name", "avatar"]);
+        res.json(profiles);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send("Server Error");
+    }
+});
+
+//info - Route - /profile/user/:user_id
+//info - Request type - GET
+//info - Desc - Get Profile based on user id
+//info - Access type - Public
+router.get("/user/:user_id", async (req, res) => {
+    try {
+        const profile = await userProfile
+            .findOne({ user: req.params.user_id })
+            .populate("user", ["name", "avatar"]);
+        if (!profile) {
+            return res.status(400).json({ msg: "Profile not found" });
+        }
+        res.json(profile);
+    } catch (error) {
+        console.error(error.message);
+        const valid = mongoose.Types.ObjectId.isValid(req.params.user_id);
+        if (!valid) {
+            return res.status(400).json({ msg: "Profile not found" });
+        }
+        res.status(500).send("Server Error");
+    }
+});
 
 module.exports = router;
