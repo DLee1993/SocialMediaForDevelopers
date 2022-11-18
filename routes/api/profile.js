@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const router = express.Router();
 const Auth = require("../../middleware/auth");
 const userProfile = require("../../models/Profile");
+const User = require("../../models/User");
 const { check, validationResult } = require("express-validator");
 
 //info - Route - /profile/me
@@ -140,6 +141,24 @@ router.get("/user/:user_id", async (req, res) => {
         if (!valid) {
             return res.status(400).json({ msg: "Profile not found" });
         }
+        res.status(500).send("Server Error");
+    }
+});
+
+//info - Route - /profile
+//info - Request type - DELETE
+//info - Desc - Delete a Profile, user and post
+//info - Access type - Private - Token required
+router.delete("/", Auth, async (req, res) => {
+    try {
+        //TODO - Remove users posts
+        //info - Remove the users profile
+        await userProfile.findOneAndRemove({ user: req.user.id });
+        //info - Remove the user
+        await User.findOneAndRemove({ _id: req.user.id });
+        res.json({ msg: "User has been removed" });
+    } catch (error) {
+        console.error(error.message);
         res.status(500).send("Server Error");
     }
 });
