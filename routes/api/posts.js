@@ -153,4 +153,68 @@ router.put("/unlike/:id", Auth, async (req, res) => {
     }
 });
 
+//info - Route - api/posts/comment/id
+//info - Request type - POST
+//info - Desc - Create a comment
+//info - Access type - Private - Token Required
+router.post(
+    "/comment/:id",
+    [Auth, [check("text", "Text is Required").not().isEmpty()]],
+    async (req, res) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            res.status(400).json({ errors: errors.array() });
+        }
+
+        try {
+            //info - find the logged in user by the id
+            const user = await User.findById(req.user.id).select("-password");
+            const post = await userPost.findById(req.params.id);
+
+            //info - New post object to be filled with data from user
+            const newComment = {
+                text: req.body.text,
+                name: user.name,
+                avatar: user.avatar,
+                user: req.user.id,
+            };
+
+            post.comments.unshift(newComment);
+            await post.save();
+
+            res.json(post.comments);
+        } catch (error) {
+            console.error(error.message);
+            res.status(500).send("Server Error");
+        }
+    }
+);
+
+//info - Route - api/posts/comment/id
+//info - Request type - DELETE
+//info - Desc - Delete a comment
+//info - Access type - Private - Token Required
+router.delete("/comment/:id/:comment_id", Auth, async (req, res) => {
+    try {
+        //info - find the post by the id
+        const post = await userPost.findById(req.params.id);
+
+        //info - Find the comment by id
+        const comment = post.comments.find((comment) => comment.id === req.params.comment_id);
+
+        !comment
+            ? res.status(404).json({ msg: "Comment does not exist" })
+            : comment.user.toString() !== req.user.id
+            ? res.status(401).json({ msg: "User not authorized" })
+            : comment.remove();
+
+        await post.save();
+
+        res.json(post.comments);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send("Server Error");
+    }
+});
+
 module.exports = router;
