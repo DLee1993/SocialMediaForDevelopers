@@ -173,7 +173,7 @@ router.put(
         Auth,
         [
             check("title", "Title is required").not().isEmpty(),
-            check("company", "Comapny name is required").not().isEmpty(),
+            check("company", "Company name is required").not().isEmpty(),
             check("from", "Start Date is required").not().isEmpty(),
         ],
     ],
@@ -220,6 +220,76 @@ router.delete("/experience/:exp_id", Auth, async (req, res) => {
         const profile = await userProfile.findOneAndUpdate(
             { user: req.user.id },
             { $pull: { experience: { _id: req.params.exp_id } } },
+            { new: true }
+        );
+
+        await profile.save();
+
+        res.json(profile);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send("Server Error");
+    }
+});
+
+//info - Route - /profile/education
+//info - Request type - PUT
+//info - Desc - Add profile education
+//info - Access type - Private - Token required
+router.put(
+    "/education",
+    [
+        Auth,
+        [
+            check("school", "School is required").not().isEmpty(),
+            check("degree", "Degree name is required").not().isEmpty(),
+            check("fieldofstudy", "Start Date is required").not().isEmpty(),
+            check("from", "Start Date is required").not().isEmpty(),
+        ],
+    ],
+    async (req, res) => {
+        //info - Check for errors with the above checks
+        const errors = validationResult(req);
+        //info - If there are errors then return the status code and error array
+        if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
+
+        //info - If there are no errors continue
+
+        //info - Descructure the fields needed from req.body
+        //info - These are the fields the user will fill with their experiences
+        const { school, degree, fieldofstudy, from, to, current, description } = req.body;
+
+        //info - Create a new object with the fields that will have new values
+        //info - These fields will be filled for each experience the user wants to add
+        const newEducation = { school, degree, fieldofstudy, from, to, current, description };
+
+        try {
+            //info - Find the profile
+            const profile = await userProfile.findOne({ user: req.user.id });
+
+            //info - Submit the data from newExp object to the profile
+            profile.education.unshift(newEducation);
+
+            //info - Save the updated profile
+            await profile.save();
+
+            res.json(profile);
+        } catch (error) {
+            console.error(error.message);
+            res.status(500).send("Server Error");
+        }
+    }
+);
+
+//info - Route - /profile/education/:edu_id
+//info - Request type - DELETE
+//info - Desc - Delete profile education
+//info - Access type - Private - Token required
+router.delete("/education/:edu_id", Auth, async (req, res) => {
+    try {
+        const profile = await userProfile.findOneAndUpdate(
+            { user: req.user.id },
+            { $pull: { education: { _id: req.params.edu_id } } },
             { new: true }
         );
 
