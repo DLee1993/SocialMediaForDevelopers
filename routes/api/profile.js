@@ -44,45 +44,47 @@ router.post(
 
         //info - build profile object
 
-        // destructure the request
-        const {
-            company,
-            website,
-            location,
-            bio,
-            status,
-            githubUsername,
-            skills,
-            youtube,
-            twitter,
-            instagram,
-            linkedin,
-            facebook,
-        } = req.body;
-
-        //info - build profile object
+        //info - profile object
         const profileFields = {};
 
-        profileFields.user = req.user.id;
-        if (company) profileFields.company = company;
-        if (website) profileFields.website = website;
-        if (location) profileFields.location = location;
-        if (bio) profileFields.bio = bio;
-        if (status) profileFields.status = status;
-        if (githubUsername) profileFields.githubUsername = githubUsername;
-        if (skills) {
-            profileFields.skills = skills.split(",").map((skill) => skill.trim());
-        }
+        //info -  build social object
 
-        //  build social object
         //info - this object is used for the object within the social profile field
         profileFields.social = {};
 
-        if (youtube) profileFields.social.youtube = youtube;
-        if (facebook) profileFields.social.facebook = facebook;
-        if (linkedin) profileFields.social.linkedin = linkedin;
-        if (twitter) profileFields.social.twitter = twitter;
-        if (instagram) profileFields.social.instagram = instagram;
+        //info - Set the user to the logged in user
+        profileFields.user = req.user.id;
+
+        //info - Array of standard fields
+        //info - Standard fields are just input fields and have no nested arrays or objects that will change
+        const standardFields = [
+            "company",
+            "website",
+            "location",
+            "bio",
+            "status",
+            "githubUsername",
+            "skills",
+        ];
+
+        //info - Social input fields
+        //info - Array of social media fields nested within the social field of the project modal
+        //info - This is array needs to be seperate as you need to access the profileFields.social to change the values
+        const socialFields = ["youtube", "twitter", "instagram", "facebook", "linkedin"];
+
+        //info - Loop through the arrays to see if each field is true
+        //info - If each field is true then set the standard field to that value
+
+        standardFields.forEach((field) => {
+            if (req.body[field]) profileFields[field] = req.body[field];
+            if (req.body[field] === "skills") {
+                req.body[field].split(",").map((skill) => skill.trim());
+            }
+        });
+
+        socialFields.forEach((field) => {
+            if (req.body[field]) profileFields.social[field] = req.body[field];
+        });
 
         try {
             //info - find the profile
@@ -182,6 +184,7 @@ router.put(
     async (req, res) => {
         //info - Check for errors with the above checks
         const errors = validationResult(req);
+
         //info - If there are errors then return the status code and error array
         if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
 
