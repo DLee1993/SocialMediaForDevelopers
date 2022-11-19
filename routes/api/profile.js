@@ -64,23 +64,24 @@ router.post(
             "bio",
             "status",
             "githubUsername",
-            "skills",
         ];
 
-        //info - Social input fields
-        //info - Array of social media fields nested within the social field of the project modal
-        //info - This is array needs to be seperate as you need to access the profileFields.social to change the values
+        //info - Social input fields are nested within the standardFields array
         const socialFields = ["youtube", "twitter", "instagram", "facebook", "linkedin"];
+
+        //info - This is object needs to be seperate as they need to be added to an array
+        const { skills } = req.body;
 
         //info - Loop through the arrays to see if each field is true
         //info - If each field is true then set the standard field to that value
 
         standardFields.forEach((field) => {
             if (req.body[field]) profileFields[field] = req.body[field];
-            if (req.body[field] === "skills") {
-                req.body[field].split(",").map((skill) => skill.trim());
-            }
         });
+
+        if (skills) {
+            profileFields.skills = skills.split(",").map((skill) => skill.trim());
+        }
 
         socialFields.forEach((field) => {
             if (req.body[field]) profileFields.social[field] = req.body[field];
