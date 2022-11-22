@@ -19,6 +19,7 @@ body {
     line-height: 1.6;
     background-color: #fff;
     color: #333;
+    overflow: hidden;
 }
 
 a {
@@ -152,6 +153,7 @@ img {
     opacity: 0.9;
     background: var(--light-color);
     color: #333;
+    transform: translateY(60px);
 }
 
 .btn-primary,

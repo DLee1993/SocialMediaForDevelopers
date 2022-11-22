@@ -30,46 +30,53 @@ const Register = ({ setAlert, registerUser }) => {
                 <i className='fas fa-user'></i> Create Your Account
             </p>
             <form className='form' onSubmit={onSubmit}>
-                <div className='form-group'>
-                    <input
-                        type='text'
-                        placeholder='Name'
-                        name='name'
-                        value={name}
-                        onChange={(e) => onChange(e)}
-                    />
-                </div>
-                <div className='form-group'>
-                    <input
-                        type='email'
-                        placeholder='Email Address'
-                        name='email'
-                        value={email}
-                        onChange={(e) => onChange(e)}
-                    />
-                    <small className='form-text'>
-                        This site uses Gravatar so if you want a profile image, use a Gravatar email
-                    </small>
-                </div>
-                <div className='form-group'>
-                    <input
-                        type='password'
-                        placeholder='Password'
-                        name='password'
-                        minLength='6'
-                        value={password}
-                        onChange={(e) => onChange(e)}
-                    />
-                </div>
-                <div className='form-group'>
-                    <input
-                        type='password'
-                        placeholder='Confirm Password'
-                        name='confirmPassword'
-                        minLength='6'
-                        value={confirmPassword}
-                        onChange={(e) => onChange(e)}
-                    />
+                <div className='flex-group'>
+                    <div className='flex-container'>
+                        <div className='form-group'>
+                            <input
+                                type='text'
+                                placeholder='Name'
+                                name='name'
+                                value={name}
+                                onChange={(e) => onChange(e)}
+                            />
+                        </div>
+                        <div className='form-group'>
+                            <input
+                                type='email'
+                                placeholder='Email Address'
+                                name='email'
+                                value={email}
+                                onChange={(e) => onChange(e)}
+                            />
+                            <small className='form-text'>
+                                This site uses Gravatar so if you want a profile image, use a
+                                Gravatar email
+                            </small>
+                        </div>
+                    </div>
+                    <div className='flex-container'>
+                        <div className='form-group'>
+                            <input
+                                type='password'
+                                placeholder='Password'
+                                name='password'
+                                minLength='6'
+                                value={password}
+                                onChange={(e) => onChange(e)}
+                            />
+                        </div>
+                        <div className='form-group'>
+                            <input
+                                type='password'
+                                placeholder='Confirm Password'
+                                name='confirmPassword'
+                                minLength='6'
+                                value={confirmPassword}
+                                onChange={(e) => onChange(e)}
+                            />
+                        </div>
+                    </div>
                 </div>
                 <input type='submit' className='btn btn-primary' value='Register' />
             </form>
