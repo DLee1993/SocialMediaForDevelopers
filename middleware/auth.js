@@ -6,7 +6,7 @@ const Auth = async (req, res, next) => {
     const token = req.header("x-auth-token");
 
     //info - check if no token
-    if (!token) return res.status(401).json({ msg: "Authorisation denied, no token provided" });
+    if (!token) return res.status(401).send({ msg: "Authorisation denied, no token provided" });
 
     //info - if there is a token we need to verify it
     try {
