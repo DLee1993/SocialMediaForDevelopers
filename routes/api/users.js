@@ -7,10 +7,10 @@ const jwt = require("jsonwebtoken");
 const config = require("config");
 const User = require("../../models/User");
 
-//info - Route - api/users
-//info - Request type - POST
-//info - Desc - Register a new user
-//info - Access type - Public
+//* - Route - api/users
+//* - Request type - POST
+//* - Desc - Register a new user
+//* - Access type - Public
 router.post(
     "/",
     [
@@ -25,22 +25,22 @@ router.post(
         const { name, email, password } = req.body;
 
         try {
-            //info - see if user exists
+            //* - see if user exists
             let user = await User.findOne({ email });
 
-            //info - if the user exists it will return a 400 status code and error message
+            //* - if the user exists it will return a 400 status code and error message
             if (user) return res.status(400).json({ errors: [{ msg: "User already exists" }] });
 
-            //info - if the user doesn't exist the code below will run
+            //* - if the user doesn't exist the code below will run
 
-            //info - get users gravatar ( profile picture )
+            //* - get users gravatar ( profile picture )
             const avatar = gravatar.url(email, {
                 s: "200",
                 r: "pg",
                 d: "mm",
             });
 
-            //info - Create a new instance of a user
+            //* - Create a new instance of a user
             user = new User({
                 name,
                 email,
@@ -48,22 +48,22 @@ router.post(
                 password,
             });
 
-            //info - encrypt the users password
+            //* - encrypt the users password
             const salt = await bcrypt.genSalt(10);
             user.password = await bcrypt.hash(password, salt);
 
-            //info - save the new user
+            //* - save the new user
             await user.save();
 
-            //info - return json web token
+            //* - return json web token
             const payload = {
                 user: {
                     id: user.id,
                 },
             };
 
-            //info - Sign the token
-            //info - This will secure the token during transit as without the secret you can not use the token
+            //* - Sign the token
+            //* - This will secure the token during transit as without the secret you can not use the token
             jwt.sign(payload, config.get("jwtSecret"), { expiresIn: 360000 }, (err, token) => {
                 if (err) throw err;
                 res.json({ token });

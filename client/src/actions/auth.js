@@ -11,7 +11,7 @@ import axios from "axios";
 import setAlert from "./alert";
 import setAuthToken from "../utils/setAuthToken";
 
-//info - Load User
+//* - Load User
 export const loadUser = () => async (dispatch) => {
     if (localStorage.token) {
         setAuthToken(localStorage.token);
@@ -30,7 +30,7 @@ export const loadUser = () => async (dispatch) => {
     }
 };
 
-//info - register a user
+//* - register a user
 
 export const registerUser =
     ({ name, email, password }) =>
@@ -55,7 +55,7 @@ export const registerUser =
         }
     };
 
-//info - Login User
+//* - Login User
 
 export const loginUser = (email, password) => async (dispatch) => {
     try {
@@ -76,7 +76,7 @@ export const loginUser = (email, password) => async (dispatch) => {
     }
 };
 
-//info - Logout User
+//* - Logout User
 
 export const logout = () => (dispatch) => {
     dispatch({

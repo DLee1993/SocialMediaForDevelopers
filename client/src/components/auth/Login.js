@@ -19,9 +19,9 @@ const Login = ({ loginUser, isAuthenticated }) => {
         loginUser(email, password);
     };
 
-    //info - If logged in Redirect
+    //* - If logged in Redirect
     if (isAuthenticated) {
-        return <Navigate to='/dashboard'/>; 
+        return <Navigate to='/dashboard' />;
     }
 
     return (

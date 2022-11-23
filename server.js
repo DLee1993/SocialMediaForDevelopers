@@ -3,17 +3,17 @@ const connectDB = require("./config/db");
 const PORT = process.env.PORT || 5000;
 const app = Express();
 
-//info - connect to the database
+//* - connect to the database
 connectDB();
 
-//info - initialise middleware
+//* - initialise middleware
 app.use(Express.json({ extended: false }));
 
 app.get("/", (req, res) => {
     res.send("api running");
 });
 
-//info - Define Routes
+//* - Define Routes
 app.use("/users", require("./routes/api/users"));
 app.use("/auth", require("./routes/api/auth"));
 app.use("/profile", require("./routes/api/profile"));

@@ -23,9 +23,9 @@ const Register = ({ setAlert, registerUser, isAuthenticated }) => {
         registerUser({ name, email, password });
     };
 
-    //info - If logged in Redirect
-    if(isAuthenticated){
-        return <Navigate to='/dashboard'/>; 
+    //* - If logged in Redirect
+    if (isAuthenticated) {
+        return <Navigate to='/dashboard' />;
     }
 
     return (
@@ -95,7 +95,7 @@ const Register = ({ setAlert, registerUser, isAuthenticated }) => {
 Register.propTypes = {
     setAlert: PropTypes.func.isRequired,
     registerUser: PropTypes.func.isRequired,
-    isAuthenticated: PropTypes.bool
+    isAuthenticated: PropTypes.bool,
 };
 
 const mapStateToProps = (state) => ({ isAuthenticated: state.authReducer.isAuthenticated });

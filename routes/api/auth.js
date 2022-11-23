@@ -7,10 +7,10 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const config = require("config");
 
-//info - Route - /auth
-//info - Request type - GET
-//info - Desc - Test Route
-//info - Access type - Public
+//* - Route - /auth
+//* - Request type - GET
+//* - Desc - Test Route
+//* - Access type - Public
 router.get("/", auth, async (req, res) => {
     try {
         const user = await User.findById(req.user.id).select("-password");
@@ -21,10 +21,10 @@ router.get("/", auth, async (req, res) => {
     }
 });
 
-//info - Route - api/auth
-//info - Request type - POST
-//info - Desc - Authenticate user and generate a token
-//info - Access type - Public
+//* - Route - api/auth
+//* - Request type - POST
+//* - Desc - Authenticate user and generate a token
+//* - Access type - Public
 router.post(
     "/",
     [
@@ -38,31 +38,31 @@ router.post(
         const { email, password } = req.body;
 
         try {
-            //info - see if user exists
+            //* - see if user exists
             let user = await User.findOne({ email });
 
-            //info - if the user doesn't exist it will return a 400 status code and error message
+            //* - if the user doesn't exist it will return a 400 status code and error message
             if (!user) return res.status(400).json({ errors: [{ msg: "Invalid Credentials" }] });
 
-            //info - if the user does exist the code below will run
+            //* - if the user does exist the code below will run
 
-            //info - check to make sure the password matches with the user email/password in the database
+            //* - check to make sure the password matches with the user email/password in the database
             const emailMatch = (await email) === user.email;
             const passwordMatch = await bcrypt.compare(password, user.password);
 
-            //info - check to make sure both of the above are true
+            //* - check to make sure both of the above are true
             if (!emailMatch) res.status(400).json({ errors: [{ msg: "Invalid Credentials" }] });
             if (!passwordMatch) res.status(400).json({ errors: [{ msg: "Invalid Credentials" }] });
 
-            //info - return json web token
+            //* - return json web token
             const payload = {
                 user: {
                     id: user.id,
                 },
             };
 
-            //info - Sign the token
-            //info - This will secure the token during transit as without the secret you can not use the token
+            //* - Sign the token
+            //* - This will secure the token during transit as without the secret you can not use the token
             jwt.sign(payload, config.get("jwtSecret"), { expiresIn: 360000 }, (err, token) => {
                 if (err) throw err;
                 res.json({ token });
