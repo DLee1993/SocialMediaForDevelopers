@@ -9,7 +9,7 @@ const connectDB = async () => {
     } catch (error) {
         console.error(error);
         console.log("Database not connected");
-        //* - if error occurs the below code will exit the process
+        // - if error occurs the below code will exit the process
         process.exit(1);
     }
 };

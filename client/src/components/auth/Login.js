@@ -19,7 +19,7 @@ const Login = ({ loginUser, isAuthenticated }) => {
         loginUser(email, password);
     };
 
-    //* - If logged in Redirect
+    // - If logged in Redirect
     if (isAuthenticated) {
         return <Navigate to='/dashboard' />;
     }

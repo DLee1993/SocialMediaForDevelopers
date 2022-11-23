@@ -1,9 +1,9 @@
 import { GET_PROFILE, PROFILE_ERROR } from "./types";
 
 import axios from "axios";
-//* import setAlert from "./alert";
+// import setAlert from "./alert";
 
-//* - Get current users profile
+// - Get current users profile
 
 export const getUserProfile = () => async (dispatch) => {
     try {

@@ -6,7 +6,7 @@ import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
 import UserAlert from "./components/layout/userAlert";
 import Dashboard from "./components/dashboard/Dashboard";
-//* redux imports
+// redux imports
 import { Provider } from "react-redux";
 import setAuthToken from "./utils/setAuthToken";
 import store from "./store";
