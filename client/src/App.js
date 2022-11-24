@@ -6,6 +6,7 @@ import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
 import UserAlert from "./components/layout/userAlert";
 import Dashboard from "./components/dashboard/Dashboard";
+import ProfileForm from "./components/profile-forms/ProfileForm";
 // redux imports
 import { Provider } from "react-redux";
 import setAuthToken from "./utils/setAuthToken";
@@ -34,6 +35,10 @@ const App = () => {
                         <Route exact path='/register' element={<Register />} />
                         <Route exact path='/login' element={<Login />} />
                         <Route path='/dashboard' element={<PrivateRoute component={Dashboard} />} />
+                        <Route
+                            path='/create-profile'
+                            element={<PrivateRoute component={ProfileForm} />}
+                        />
                     </Routes>
                 </Fragment>
             </BrowserRouter>
