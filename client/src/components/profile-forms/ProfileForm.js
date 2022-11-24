@@ -1,7 +1,8 @@
 import React, { useState, Fragment } from "react";
-// import PropTypes from "prop-types";
-// import { connect } from "react-redux";
-import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { createProfile, getUserProfile } from "../../actions/profile";
 
 const initialState = {
     company: "",
@@ -18,10 +19,10 @@ const initialState = {
     instagram: "",
 };
 
-const ProfileForm = () => {
+const ProfileForm = ({ profile: { profile, loading }, createProfile, getCurrentProfile }) => {
     const [formData, setFormData] = useState(initialState);
     const [displaySocialInputs, toggleSocialInputs] = useState(false);
-
+    const navigate = useNavigate();
     const {
         company,
         website,
@@ -39,6 +40,11 @@ const ProfileForm = () => {
 
     const onChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
+    const onSubmit = (e) => {
+        e.preventDefault();
+        createProfile(formData, navigate, profile ? true : false);
+    };
+
     return (
         <section className='container'>
             <h1 className='large text-primary'>Create Your Profile</h1>
@@ -46,7 +52,7 @@ const ProfileForm = () => {
                 <i className='fas fa-user' />
             </p>
             <small>* = required field</small>
-            <form className='form'>
+            <form className='form' onSubmit={(e) => onSubmit(e)}>
                 <div className='form-group'>
                     <select name='status' value={status} onChange={(e) => onChange(e)}>
                         <option>* Select Professional Status</option>
@@ -207,4 +213,12 @@ const ProfileForm = () => {
     );
 };
 
-export default ProfileForm;
+ProfileForm.propTypes = {
+    createProfile: PropTypes.func.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+    profile: state.profileReducer,
+});
+
+export default connect(mapStateToProps, { createProfile, getUserProfile })(ProfileForm);
