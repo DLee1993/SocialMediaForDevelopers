@@ -8,6 +8,8 @@ import UserAlert from "./components/layout/userAlert";
 import Dashboard from "./components/dashboard/Dashboard";
 import CreateProfile from "./components/profile-forms/CreateProfile";
 import EditProfile from "./components/profile-forms/EditProfile";
+import AddExperience from "./components/profile-forms/AddExperience";
+import AddEducation from "./components/profile-forms/AddEducation";
 // redux imports
 import { Provider } from "react-redux";
 import setAuthToken from "./utils/setAuthToken";
@@ -43,6 +45,14 @@ const App = () => {
                         <Route
                             path='/edit-profile'
                             element={<PrivateRoute component={EditProfile} />}
+                        />
+                        <Route
+                            path='/add-experience'
+                            element={<PrivateRoute component={AddExperience} />}
+                        />
+                        <Route
+                            path='/add-education'
+                            element={<PrivateRoute component={AddEducation} />}
                         />
                     </Routes>
                 </Fragment>
