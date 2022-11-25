@@ -64,7 +64,7 @@ router.post(
             "location",
             "bio",
             "status",
-            "githubUsername",
+            "githubusername",
         ];
 
         // - Social input fields are nested within the standardFields array
